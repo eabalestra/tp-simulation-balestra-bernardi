@@ -1,10 +1,10 @@
-from methods.euler_method import EulerMethod
+from methods.euler import Euler
 from methods.heun import Heun
 from utils.plot import plot
 
 if __name__ == '__main__':
-    euler_method = EulerMethod(s0=763, i0=1, r0=1, h=0.07)
-    heun_method = Heun(s0=763, i0=1, r0=1, h=0.07)
+    euler_method = Euler(s0=763, i0=1, r0=1, h=0.05)
+    heun_method = Heun(s0=763, i0=1, r0=1, h=0.05)
 
     beta = 0.0022
     retired_rate = 0.4477

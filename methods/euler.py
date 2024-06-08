@@ -2,8 +2,7 @@ from methods.method import Method
 from utils.derivatives import derivative_function_of_s, derivative_function_of_i, derivative_function_of_r
 
 
-class Heun(Method):
-
+class Euler(Method):
     def s(self, t, beta, retired_rate):
         if self.is_initial_or_previous_time(t):
             return self.s0
@@ -13,14 +12,12 @@ class Heun(Method):
         s_function = self.s(t - self.h, beta, retired_rate)
         i_function = self.i(t - self.h, beta, retired_rate)
 
-        k1 = derivative_function_of_s(s_function, i_function, beta)
-        k2 = derivative_function_of_s(s_function + self.h * k1, i_function + self.h * k1, beta)
+        derivative_of_s = derivative_function_of_s(s_function, i_function, beta)
+        euler = s_function + self.h * derivative_of_s
 
-        heun_result = s_function + 0.5 * self.h * (k1 + k2)
+        self.s_values[t] = euler
 
-        self.s_values[t] = heun_result
-
-        return heun_result
+        return euler
 
     def i(self, t, beta, retired_rate):
         if self.is_initial_or_previous_time(t):
@@ -31,14 +28,12 @@ class Heun(Method):
         s_function = self.s(t - self.h, beta, retired_rate)
         i_function = self.i(t - self.h, beta, retired_rate)
 
-        k1 = derivative_function_of_i(s_function, i_function, beta, retired_rate)
-        k2 = derivative_function_of_i(s_function + self.h * k1, i_function + self.h * k1, beta, retired_rate)
+        derivative_of_i = derivative_function_of_i(s_function, i_function, beta, retired_rate)
+        euler_result = i_function + self.h * derivative_of_i
 
-        heun_result = i_function + 0.5 * self.h * (k1 + k2)
+        self.i_values[t] = euler_result
 
-        self.i_values[t] = heun_result
-
-        return heun_result
+        return euler_result
 
     def r(self, t, beta, retired_rate):
         if self.is_initial_or_previous_time(t):
@@ -49,11 +44,9 @@ class Heun(Method):
         i_function = self.i(t - self.h, beta, retired_rate)
         r_function = self.r(t - self.h, beta, retired_rate)
 
-        k1 = derivative_function_of_r(i_function, retired_rate)
-        k2 = derivative_function_of_r(i_function + self.h * k1, retired_rate)
+        derivative_of_r = derivative_function_of_r(i_function, retired_rate)
+        euler_result = r_function + self.h * derivative_of_r
 
-        heun_result = r_function + 0.5 * self.h * (k1 + k2)
+        self.r_values[t] = euler_result
 
-        self.r_values[t] = heun_result
-
-        return heun_result
+        return euler_result
