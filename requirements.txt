@@ -1,3 +1,5 @@
 gnuplotlib==0.41
 numpy==1.26.4
 numpysane==0.40
+
+matplotlib~=3.9.0
